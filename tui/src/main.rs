@@ -9,7 +9,7 @@ mod ui_management;
 use termination::{Interrupted, Terminator};
 
 #[tokio::main]
-async fn main() -> anyhow::Result<()> {
+async fn chat() -> anyhow::Result<()> {
     let (terminator, mut interrupt_rx) = create_termination();
     let (state_store, state_rx) = StateStore::new();
     let (ui_manager, action_rx) = UiManager::new();
@@ -29,4 +29,7 @@ async fn main() -> anyhow::Result<()> {
     }
 
     Ok(())
+}
+fn main() -> anyhow::Result<()> {
+    chat()
 }
