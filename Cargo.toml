@@ -1,7 +1,7 @@
 [workspace]
 resolver = "2"
 members = [
-  "comms",
   "tui",
-  "server",
+  "tui/src/comms",
+  "tui/src/server",
 ]

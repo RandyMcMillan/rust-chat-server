@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.75"
 circular-queue = "0.2.6"
-comms = { path = "src/comms", features = ["client"] }
+gnostr-comms = { path = "../gnostr-comms", features = ["client"] }
 crossterm = { version = "0.27.0", features = ["event-stream"] }
 rand = "0.8.5"
 ratatui = { version = "0.23.0", features = ["all-widgets"] }
