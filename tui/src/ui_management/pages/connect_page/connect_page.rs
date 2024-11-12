@@ -48,7 +48,7 @@ impl ConnectPage {
     }
 }
 
-const DEFAULT_SERVER_ADDR: &str = "localhost:8080";
+const DEFAULT_SERVER_ADDR: &str = "localhost:6102";
 
 impl Component for ConnectPage {
     fn new(state: &State, action_tx: UnboundedSender<Action>) -> Self

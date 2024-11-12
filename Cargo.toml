@@ -1,7 +1,0 @@
-[workspace]
-resolver = "2"
-members = [
-  "tui",
-  "tui/src/comms",
-  "tui/src/server",
-]

@@ -1,7 +1,19 @@
 [package]
 name = "gnostr-chat"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2021"
+
+[workspace]
+resolver = "2"
+members = [
+  ".",
+  "src/comms",
+  "src/server",
+]
+
+[[bin]]
+name = "gnostr-chat-server"
+path = "src/server/src/main.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -10,6 +22,8 @@ anyhow = "1.0.75"
 circular-queue = "0.2.6"
 comms = { path = "src/comms", features = ["client"] }
 crossterm = { version = "0.27.0", features = ["event-stream"] }
+gnostr-chat-server = { version = "0.1.0", path = "src/server" }
+nanoid = "0.4.0"
 rand = "0.8.5"
 ratatui = { version = "0.23.0", features = ["all-widgets"] }
 serde = "1.0.188"
