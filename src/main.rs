@@ -75,7 +75,6 @@ fn demo_application(tx: mpsc::Sender<AppEvent>) {
     }
 }
 
-
 /// Create a WorkQueue of any type that holds all the work to be done
 #[derive(Clone)]
 struct WorkQueue<T> {
@@ -253,7 +252,6 @@ async fn chat() -> anyhow::Result<()> {
 extern crate log;
 //use tui_logger;
 fn main() -> anyhow::Result<()> {
-
     // Set max_log_level to Trace
     tui_logger::init_logger(log::LevelFilter::Trace).unwrap();
 
