@@ -69,7 +69,7 @@ impl From<&State> for Props {
     }
 }
 
-const DEFAULT_HOVERED_SECTION: Section = Section::MessageInput;
+const DEFAULT_HOVERED_SECTION: Section = Section::RoomList;
 
 /// ChatPage handles the UI and the state of the chat page
 pub struct ChatPage {
