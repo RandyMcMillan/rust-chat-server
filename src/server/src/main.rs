@@ -10,6 +10,7 @@ mod room_manager;
 mod session;
 
 const PORT: u16 = 6102;
+//
 const CHAT_ROOMS_METADATAS: &str = include_str!("../resources/chat_rooms_metadatas.json");
 
 #[tokio::main]
@@ -31,7 +32,7 @@ async fn main() {
         .expect("could not bind to the port");
     let (quit_tx, quit_rx) = broadcast::channel::<()>(1);
 
-    println!("Listening on port {}", PORT);
+    println!("{{\"port\":\"{}\"}}", PORT);
     loop {
         tokio::select! {
             Ok(_) = ctrl_c() => {
