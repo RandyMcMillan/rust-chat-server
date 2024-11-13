@@ -1,4 +1,5 @@
 use std::sync::Arc;
+use std::process;
 
 use anyhow::Context;
 use room_manager::RoomManagerBuilder;
@@ -32,7 +33,7 @@ async fn main() {
         .expect("could not bind to the port");
     let (quit_tx, quit_rx) = broadcast::channel::<()>(1);
 
-    println!("{{\"port\":\"{}\"}}", PORT);
+    println!("[\"{}\":{{\"port\":\"{}\"}}]", process::id(), PORT);
     loop {
         tokio::select! {
             Ok(_) = ctrl_c() => {
