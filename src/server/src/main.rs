@@ -33,7 +33,7 @@ async fn main() {
         .expect("could not bind to the port");
     let (quit_tx, quit_rx) = broadcast::channel::<()>(1);
 
-    println!("[\"{}\":{{\"port\":\"{}\"}}]", process::id(), PORT);
+    println!("[\"gnostr-chat-relay\",{{\"pid\":\"{}\",\"port\":\"{}\"}}]", process::id(), PORT);
     loop {
         tokio::select! {
             Ok(_) = ctrl_c() => {
