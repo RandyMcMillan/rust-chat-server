@@ -33,21 +33,10 @@ pub struct ConnectPage {
     // Mapped Props from State
     props: Props,
     // Internal Components
-    welcome: InputBox,
     input_box: InputBox,
 }
 
 impl ConnectPage {
-    fn display_welcome(&mut self) {
-        if self.welcome.is_empty() {
-            //TODO
-            return;
-        }
-
-        //let _ = self.action_tx.send(Action::ConnectToServerRequest {
-        //    addr: self.input_box.text().to_string(),
-        //});
-    }
     fn connect_to_server(&mut self) {
         if self.input_box.is_empty() {
             return;
@@ -59,7 +48,6 @@ impl ConnectPage {
     }
 }
 
-const DEFAULT_WELCOME: &str = "https://chat.gnostr.org:6102";
 const DEFAULT_SERVER_ADDR: &str = "localhost:6102";
 
 impl Component for ConnectPage {
@@ -67,9 +55,7 @@ impl Component for ConnectPage {
     where
         Self: Sized,
     {
-        let mut welcome = InputBox::new(state, action_tx.clone());
         let mut input_box = InputBox::new(state, action_tx.clone());
-        welcome.set_text(DEFAULT_WELCOME);
         input_box.set_text(DEFAULT_SERVER_ADDR);
 
         ConnectPage {
@@ -78,7 +64,6 @@ impl Component for ConnectPage {
             props: Props::from(state),
             //
             input_box,
-            welcome,
         }
         .move_with_state(state)
     }
@@ -121,80 +106,52 @@ impl Component for ConnectPage {
 
 impl ComponentRender<()> for ConnectPage {
     fn render<B: Backend>(&self, frame: &mut Frame<B>, _props: ()) {
-        let [v_centered_0, v_centered_1, v_centered_2, v_centered_3] = *Layout::default()
+        let [_, vertical_centered, _] = *Layout::default()
             .direction(Direction::Vertical)
             .constraints(
                 [
-                    //Constraint::Min(7),
-                    Constraint::Ratio(1, 3), //chat.gnostr.org
-
-                    Constraint::Min(7),
-                    //Constraint::Ratio(1, 3), //localhost
-
-                    //Constraint::Min(7),
                     Constraint::Ratio(1, 3),
-
-                    //Constraint::Min(7),
+                    Constraint::Min(1),
                     Constraint::Ratio(1, 3),
                 ]
                 .as_ref(),
             )
             .split(frame.size())
         else {
-            panic!("The main layout should have 4 chunks")
+            panic!("The main layout should have 3 chunks")
         };
 
-        let [_, _, both_centered, _] = *Layout::default()
+        let [_, both_centered, _] = *Layout::default()
             .direction(Direction::Horizontal)
             .constraints(
                 [
                     Constraint::Ratio(1, 3),
-                    Constraint::Ratio(1, 3),
-                    Constraint::Ratio(1, 3),
-                    //Constraint::Min(1),
+                    Constraint::Min(1),
                     Constraint::Ratio(1, 3),
                 ]
                 .as_ref(),
             )
-            .split(v_centered_0)
-            //.split(v_centered_1)
-            //.split(v_centered_2)
-            //.split(v_centered_3)
+            .split(vertical_centered)
         else {
-            panic!("The horizontal layout should have 4 chunks")
+            panic!("The horizontal layout should have 3 chunks")
         };
 
-        //let [container_welcome, container_addr_input, container_help_text, container_error_message] =
-        let [container_addr_input, container_welcome, container_help_text, container_error_message] =
+        let [container_addr_input, container_help_text, container_error_message] =
             *Layout::default()
                 .direction(Direction::Vertical)
                 .constraints(
                     [
                         Constraint::Length(3),
-                        //Constraint::Ratio(1, 3),
-                        //Constraint::Ratio(1, 3),
                         Constraint::Length(3),
-                        Constraint::Length(3),
-                        //Constraint::Ratio(1, 3),
-                        Constraint::Ratio(1, 3),
-                        //Constraint::Length(3),
+                        Constraint::Min(1),
                     ]
                     .as_ref(),
                 )
                 .split(both_centered)
         else {
-            panic!("The left layout should have 4 chunks")
+            panic!("The left layout should have 3 chunks")
         };
 
-        self.welcome.render(
-            frame,
-            input_box::RenderProps {
-                title: "gnost-chat".into(),
-                area: container_welcome,
-                border_color: Color::Yellow,
-                show_cursor: false,
-            },
-        );
         self.input_box.render(
             frame,
             input_box::RenderProps {
@@ -210,12 +167,12 @@ impl ComponentRender<()> for ConnectPage {
             "<Enter>".bold(),
             " to connect".into(),
         ])));
-        //frame.render_widget(help_text, container_help_text);
+        frame.render_widget(help_text, container_help_text);
 
         let error_message = Paragraph::new(if let Some(err) = self.props.error_message.as_ref() {
             Text::from(format!("Error: {}", err.as_str()))
         } else {
-            Text::from("error_message")
+            Text::from("")
         })
         .wrap(Wrap { trim: true })
         .style(
@@ -225,6 +182,5 @@ impl ComponentRender<()> for ConnectPage {
         );
 
         frame.render_widget(error_message, container_error_message);
-        frame.render_widget(help_text, container_help_text);
     }
 }
