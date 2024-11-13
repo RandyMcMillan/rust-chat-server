@@ -55,7 +55,7 @@ struct App {
 
 #[derive(Debug)]
 enum AppEvent {
-    UiEvent(Event),
+    UiEvent(crossterm::event::Event),
     LoopCnt(Option<u16>),
 }
 
