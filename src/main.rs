@@ -14,6 +14,41 @@ use std::collections::VecDeque;
 use std::sync::{mpsc, Arc, Mutex};
 use std::time::Duration;
 
+use std::io;
+use std::{thread, time};
+
+use log::LevelFilter;
+use log::*;
+
+#[cfg(feature = "crossterm")]
+use crossterm::event::KeyCode as Key;
+#[cfg(feature = "crossterm")]
+use crossterm::{
+    event::{self, DisableMouseCapture, EnableMouseCapture, Event},
+    execute,
+    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+};
+
+#[cfg(feature = "termion")]
+use termion::{
+    event::{Event, Key},
+    input::{MouseTerminal, TermRead},
+    raw::IntoRawMode,
+    screen::AlternateScreen,
+};
+
+#[cfg(feature = "examples-ratatui-crossterm")]
+use ratatui::backend::CrosstermBackend as SelectedBackend;
+#[cfg(feature = "examples-ratatui-termion")]
+use ratatui::backend::TermionBackend as SelectedBackend;
+use ratatui::prelude::*;
+use ratatui::widgets::*;
+
+use tui_logger::*;
+
+
+
+
 /// Create a WorkQueue of any type that holds all the work to be done
 #[derive(Clone)]
 struct WorkQueue<T> {
@@ -186,6 +221,16 @@ async fn chat() -> anyhow::Result<()> {
 
     Ok(())
 }
+#[macro_use]
+extern crate log;
+//use tui_logger;
 fn main() -> anyhow::Result<()> {
+
+    // Set max_log_level to Trace
+    tui_logger::init_logger(log::LevelFilter::Trace).unwrap();
+
+    // Set default level for unknown targets to Trace
+    tui_logger::set_default_level(log::LevelFilter::Trace);
+
     chat()
 }
