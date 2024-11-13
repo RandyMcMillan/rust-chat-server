@@ -121,11 +121,11 @@ impl Component for ConnectPage {
 
 impl ComponentRender<()> for ConnectPage {
     fn render<B: Backend>(&self, frame: &mut Frame<B>, _props: ()) {
-        let [_, vertical_centered,vertical_ventered, _] = *Layout::default()
+        let [v_centered_0, v_centered_1, v_centered_2, v_centered_3] = *Layout::default()
             .direction(Direction::Vertical)
             .constraints(
                 [
-                    Constraint::Min(0),
+                    Constraint::Ratio(1, 3),
                     Constraint::Ratio(1, 3),
                     Constraint::Ratio(1, 3),
                     Constraint::Ratio(1, 3),
@@ -141,14 +141,17 @@ impl ComponentRender<()> for ConnectPage {
             .direction(Direction::Horizontal)
             .constraints(
                 [
-                    Constraint::Ratio(1, 3),
+                    Constraint::Min(1),
                     Constraint::Ratio(1, 3),
                     Constraint::Ratio(1, 3),
                     Constraint::Ratio(1, 3),
                 ]
                 .as_ref(),
             )
-            .split(vertical_centered)
+            //.split(v_centered_0)
+            .split(v_centered_1)
+            //.split(v_centered_2)
+            //.split(v_centered_3)
         else {
             panic!("The horizontal layout should have 4 chunks")
         };
