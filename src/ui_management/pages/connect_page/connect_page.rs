@@ -125,7 +125,7 @@ impl ComponentRender<()> for ConnectPage {
             .direction(Direction::Vertical)
             .constraints(
                 [
-                    Constraint::Ratio(1, 3),
+                    Constraint::Min(0),
                     Constraint::Ratio(1, 3),
                     Constraint::Ratio(1, 3),
                     Constraint::Ratio(1, 3),
@@ -141,7 +141,7 @@ impl ComponentRender<()> for ConnectPage {
             .direction(Direction::Horizontal)
             .constraints(
                 [
-                    Constraint::Min(1),
+                    Constraint::Ratio(1, 3),
                     Constraint::Ratio(1, 3),
                     Constraint::Ratio(1, 3),
                     Constraint::Ratio(1, 3),
