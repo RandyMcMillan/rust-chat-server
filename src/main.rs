@@ -233,6 +233,7 @@ async fn chat() -> anyhow::Result<()> {
     let (ui_manager, action_rx) = UiManager::new();
 
     tokio::try_join!(
+        //main_loops
         state_store.main_loop(terminator, action_rx, interrupt_rx.resubscribe()),
         ui_manager.main_loop(state_rx, interrupt_rx.resubscribe()),
     )?;

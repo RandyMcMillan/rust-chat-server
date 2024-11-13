@@ -128,8 +128,8 @@ impl ComponentRender<()> for ConnectPage {
                     //Constraint::Min(7),
                     Constraint::Ratio(1, 3), //chat.gnostr.org
 
-                    //Constraint::Min(7),
-                    Constraint::Ratio(1, 3), //localhost
+                    Constraint::Min(7),
+                    //Constraint::Ratio(1, 3), //localhost
 
                     //Constraint::Min(7),
                     Constraint::Ratio(1, 3),
