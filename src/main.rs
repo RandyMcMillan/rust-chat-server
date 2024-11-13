@@ -46,7 +46,34 @@ use ratatui::widgets::*;
 
 use tui_logger::*;
 
+struct App {
+    states: Vec<TuiWidgetState>,
+    tabs: Vec<String>,
+    selected_tab: usize,
+    opt_info_cnt: Option<u16>,
+}
 
+#[derive(Debug)]
+enum AppEvent {
+    UiEvent(Event),
+    LoopCnt(Option<u16>),
+}
+
+fn demo_application(tx: mpsc::Sender<AppEvent>) {
+    let one_second = time::Duration::from_millis(1_000);
+    let mut lp_cnt = (1..=100).into_iter();
+    loop {
+        trace!(target:"DEMO", "Sleep one second");
+        thread::sleep(one_second);
+        trace!(target:"DEMO", "Issue log entry for each level");
+        error!(target:"error", "an error");
+        warn!(target:"warn", "a warning");
+        trace!(target:"trace", "a trace");
+        debug!(target:"debug", "a debug");
+        info!(target:"info", "an info");
+        tx.send(AppEvent::LoopCnt(lp_cnt.next())).unwrap();
+    }
+}
 
 
 /// Create a WorkQueue of any type that holds all the work to be done
