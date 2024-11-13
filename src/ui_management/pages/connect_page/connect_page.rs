@@ -77,8 +77,8 @@ impl Component for ConnectPage {
             //
             props: Props::from(state),
             //
-            welcome,
             input_box,
+            welcome,
         }
         .move_with_state(state)
     }
@@ -125,9 +125,16 @@ impl ComponentRender<()> for ConnectPage {
             .direction(Direction::Vertical)
             .constraints(
                 [
+                    //Constraint::Min(7),
+                    Constraint::Ratio(1, 3), //chat.gnostr.org
+
+                    //Constraint::Min(7),
+                    Constraint::Ratio(1, 3), //localhost
+
+                    //Constraint::Min(7),
                     Constraint::Ratio(1, 3),
-                    Constraint::Ratio(1, 3),
-                    Constraint::Ratio(1, 3),
+
+                    //Constraint::Min(7),
                     Constraint::Ratio(1, 3),
                 ]
                 .as_ref(),
@@ -141,30 +148,36 @@ impl ComponentRender<()> for ConnectPage {
             .direction(Direction::Horizontal)
             .constraints(
                 [
-                    Constraint::Min(1),
                     Constraint::Ratio(1, 3),
                     Constraint::Ratio(1, 3),
+                    Constraint::Ratio(1, 3),
+                    //Constraint::Min(1),
                     Constraint::Ratio(1, 3),
                 ]
                 .as_ref(),
             )
-            //.split(v_centered_0)
-            .split(v_centered_1)
+            .split(v_centered_0)
+            //.split(v_centered_1)
             //.split(v_centered_2)
             //.split(v_centered_3)
         else {
             panic!("The horizontal layout should have 4 chunks")
         };
 
-        let [container_welcome, container_addr_input, container_help_text, container_error_message] =
+        //let [container_welcome, container_addr_input, container_help_text, container_error_message] =
+        let [container_addr_input, container_welcome, container_help_text, container_error_message] =
             *Layout::default()
                 .direction(Direction::Vertical)
                 .constraints(
                     [
                         Constraint::Length(3),
+                        //Constraint::Ratio(1, 3),
+                        //Constraint::Ratio(1, 3),
                         Constraint::Length(3),
                         Constraint::Length(3),
-                        Constraint::Length(3),
+                        //Constraint::Ratio(1, 3),
+                        Constraint::Ratio(1, 3),
+                        //Constraint::Length(3),
                     ]
                     .as_ref(),
                 )
@@ -197,12 +210,12 @@ impl ComponentRender<()> for ConnectPage {
             "<Enter>".bold(),
             " to connect".into(),
         ])));
-        frame.render_widget(help_text, container_help_text);
+        //frame.render_widget(help_text, container_help_text);
 
         let error_message = Paragraph::new(if let Some(err) = self.props.error_message.as_ref() {
             Text::from(format!("Error: {}", err.as_str()))
         } else {
-            Text::from("")
+            Text::from("error_message")
         })
         .wrap(Wrap { trim: true })
         .style(
@@ -212,5 +225,6 @@ impl ComponentRender<()> for ConnectPage {
         );
 
         frame.render_widget(error_message, container_error_message);
+        frame.render_widget(help_text, container_help_text);
     }
 }
