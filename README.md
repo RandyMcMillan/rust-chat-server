@@ -1,29 +1,33 @@
-# Rust Chat Server
+# 🎮 Rust Chat Server - TUI Client
 
-This project serves as a learning exercise in [Rust](https://www.rust-lang.org/), [Tokio](https://tokio.rs/), [Channels](https://tokio.rs/tokio/tutorial/channels), and TUI (Terminal User Interface) programming. It features a room-based chat server with a Terminal User Interface (TUI), utilizing technologies such as Tokio, Ratatui, and a Redux-inspired architecture.
+The `tui` binary provides a terminal-based UI for the [rust-chat-server](../). This interface communicates with the server using a TCP client via our [comms library](../comms).
 
-![TUI Demo](./tui/docs/tui.gif)
+![TUI Demo](./docs/tui.gif)
 
-**Note**: This project is not suitable for production use. It's designed strictly for educational purposes.
+---
 
-## Setup Instructions
+## 🛠 Technical Stack
 
-To get the project up and running, follow these steps:
+- **Async I/O**: Leverages [Tokio](https://tokio.rs/) for asynchronous tasks and non-blocking I/O, integrating both [Tokio Streams](https://tokio.rs/tokio/tutorial/streams) and [Crossterm's EventStream](https://docs.rs/crossterm/latest/crossterm/event/struct.EventStream.html).
+- **Flux-inspired Design**: Implements a simplified [Flux Architecture](https://facebookarchive.github.io/flux/docs/in-depth-overview) to decouple UI and user/server interactions, facilitated by [Tokio Channels](https://tokio.rs/tokio/tutorial/channels).
+- **TUI Rendering**: Utilizes [ratatui-org/ratatui](https://github.com/ratatui-org/ratatui) for terminal-based UI rendering.
 
-1. Clone the repository: `git clone git@github.com:Yengas/rust-chat-server.git`
-2. Make sure you have [Rust and Cargo](https://www.rust-lang.org/tools/install) installed.
-3. Change to the project directory: `cd rust-chat-server`
-4. Start the server: `cargo run --bin server`
-5. Launch one or more TUI instances: `cargo run --bin tui`
+## 🏗 Architectural Overview 
 
-## Project Overview
+![High Level Architecture](./docs/high-level-architecture.svg)
 
-The project utilizes Rust Workspaces to divide itself into three sub-projects, each with its own README that details the concepts and architecture. Below is a brief overview:
+1. **State Store & UI Management Loop**: On startup, the application initializes loops for both **State Store** and **UI Management**, and sets up channels for **State Updates** and **User Actions**.
+2. **UI Management**: 
+   - **Pages** and **Components** sub-modules separate UI-related logic, resembling the structural design in modern web SPAs.
+   - State-linked components can emit **User Actions** like server connection requests, room joins, and message sends.
+   - A dedicated loop orchestrates the UI updates based on both state changes and terminal events.
+3. **State Store**: 
+   - **State Store** subscribes to **User Actions** to manage server connections and commands.
+   - Upon processing **User Actions** or **Server Events**, **State Store** pushes the new state to the **State Channel** for UI updates.
 
-- [comms](./comms/): This sub-project houses a library crate that provides Events and Commands used for server-client communication. It also offers client/server socket utilities, enabled via feature flags, to assist in serializing and deserializing events and commands.
-- [server](./server/): Built on the [Tokio Runtime](https://tokio.rs/) and using [Tokio Channels](https://tokio.rs/tokio/tutorial/channels), this sub-project implements a single-instance chat server that manages room states and user participation.
-- [tui](./tui/): Leveraging [Ratatui](https://github.com/ratatui-org/ratatui), this sub-project implements a terminal-based user interface. Users can connect to a chat server, join rooms, and send/receive messages. The code follows a Redux-inspired structure to separate state management from TUI rendering.
+## 🚀 Quick Start
 
-## License
+Run the TUI client using `cargo run` or `cargo run --bin tui`. Upon bootstrap, you will be asked to enter a server address. The server address field will default to `localhost:8080`. Press `<Enter>` after entering the server you want to connect to.
 
-The project is distributed under the [MIT License](./LICENSE).
+Server disconnections will trigger a state reset, requiring re-login.
+

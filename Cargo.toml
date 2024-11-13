@@ -1,7 +1,34 @@
+[package]
+name = "gnostr-chat"
+version = "0.0.1"
+edition = "2021"
+
 [workspace]
 resolver = "2"
 members = [
-  "comms",
-  "tui",
-  "server",
+  ".",
+  "src/comms",
+  "src/server",
 ]
+
+[[bin]]
+name = "gnostr-chat-server"
+path = "src/server/src/main.rs"
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.75"
+circular-queue = "0.2.6"
+comms = { path = "src/comms", features = ["client"] }
+crossterm = { version = "0.27.0", features = ["event-stream"] }
+env_logger = "0.8.2"
+gnostr-chat-server = { version = "0.1.0", path = "src/server" }
+log = "0.4.13"
+nanoid = "0.4.0"
+rand = "0.8.5"
+ratatui = { version = "0.23.0", features = ["all-widgets"] }
+serde = "1.0.188"
+serde_json = "1.0.105"
+tokio = { version = "1.32.0", features = ["full"] }
+tokio-stream = { version = "0.1.14" }
+tui-logger = { version = "0.13.2", features = ["crossterm"] }
