@@ -226,7 +226,7 @@ impl ComponentRender<RenderProps> for RoomList {
             .highlight_style(
                 Style::default()
                     // yellow that would work for both dark / light modes
-                    .bg(Color::Rgb(255, 223, 102))
+                    .bg(Color::Magenta)
                     .add_modifier(Modifier::BOLD),
             )
             .highlight_symbol(">");
