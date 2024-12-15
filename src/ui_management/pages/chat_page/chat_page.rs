@@ -136,8 +136,8 @@ impl ChatPage {
 
     fn calculate_border_color(&self, section: Section) -> Color {
         match (self.active_section.as_ref(), &self.last_hovered_section) {
-            (Some(active_section), _) if active_section.eq(&section) => Color::Yellow,
-            (_, last_hovered_section) if last_hovered_section.eq(&section) => Color::Blue,
+            (Some(active_section), _) if active_section.eq(&section) => Color::Magenta,
+            (_, last_hovered_section) if last_hovered_section.eq(&section) => Color::Green,
             _ => Color::Reset,
         }
     }
@@ -196,6 +196,13 @@ impl Component for ChatPage {
         match active_section {
             None => match key.code {
                 KeyCode::Char('e') => {
+                    let last_hovered_section = self.last_hovered_section.clone();
+
+                    self.active_section = Some(last_hovered_section.clone());
+                    self.get_section_activation_for_section(&last_hovered_section)
+                        .activate();
+                }
+                KeyCode::Down => {
                     let last_hovered_section = self.last_hovered_section.clone();
 
                     self.active_section = Some(last_hovered_section.clone());
@@ -439,7 +446,7 @@ impl HasUsageInfo for ChatPage {
                         description: "to hover widgets".into(),
                     },
                     UsageInfoLine {
-                        keys: vec!["e".into()],
+                        keys: vec!["e or ↓".into()],
                         description: format!(
                             "to activate {}",
                             self.get_component_for_section(&self.last_hovered_section)
